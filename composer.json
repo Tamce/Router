@@ -1,5 +1,5 @@
 {
-    "name": "tamce/router",
+    "name": "elfstack/router",
     "description": "A very very simple router to help you build your app.",
     "type": "library",
     "license": "MIT",
