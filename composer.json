@@ -1,0 +1,20 @@
+{
+    "name": "tamce/router",
+    "description": "A very very simple router to help you build your app.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tamce",
+            "email": "tamce@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ElfStack\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+    }
+}
