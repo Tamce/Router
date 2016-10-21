@@ -1,5 +1,6 @@
 <?php
 namespace ElfStack;
+use Exception;
 
 defined('ELFENRO_ROUTE_PATH') ? '' : define('ELFENRO_ROUTE_PATH', urldecode(parse_url($_SERVER['REQUEST_URI'])['path']));
 use Exception;
@@ -36,7 +37,7 @@ class Router
 			$args[] = $foo;
 			return call_user_func_array('self::route', $args);
 		}
-		throw new \Exception('Call to undefined static function: '.$foo);
+		throw new Exception('Call to undefined static function: '.$foo);
 	}
 
 	static public function method($method, $allowOverride = true)
