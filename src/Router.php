@@ -1,7 +1,9 @@
 <?php
 namespace ElfStack;
 
-defined('ELFENRO_ROUTE_PATH') ? '' : define('ELFENRO_ROUTE_PATH', parse_url($_SERVER['REQUEST_URI'])['path']);
+defined('ELFENRO_ROUTE_PATH') ? '' : define('ELFENRO_ROUTE_PATH', urldecode(parse_url($_SERVER['REQUEST_URI'])['path']));
+use Exception;
+use Closure;
 
 class Router
 {
@@ -37,27 +39,31 @@ class Router
 		throw new \Exception('Call to undefined static function: '.$foo);
 	}
 
-	static public function httpMethod($method)
+	static public function method($method, $allowOverride = true)
 	{
+		// 从 HTTP 头中获取 X-Method-Override 来重写 HTTP 动词
+		if ($allowOverride and isset($_SERVER['HTTP_X_METHOD_OVERRIDE'])) {
+			return strtolower($_SERVER['HTTP_X_METHOD_OVERRIDE']) === strtolower($method);
+		}
 		return strtolower($_SERVER['REQUEST_METHOD']) === strtolower($method);
 	}
 
-	static public function route($uri, $callback, $method = null)
+	static public function route($uri, $callback, $method = null, $allowOverride = true)
 	{
 		if (self::$done) {
 			return false;
 		}
-		if (self::reroute($uri, $callback, $method)) {
+		if (self::reroute($uri, $callback, $method, $allowOverride)) {
 			self::$done = true;
 			return true;
 		}
 		return false;
 	}
 
-	static public function reroute($uri, $callback, $method = null)
+	static public function reroute($uri, $callback, $method = null, $allowOverride = true)
 	{
 		if (!empty($method)) {
-			if (self::httpMethod($method) === false) {
+			if (self::method($method, $allowOverride) === false) {
 				return false;
 			}
 		}
@@ -83,7 +89,7 @@ class Router
 		// if $callback is string, we analyse it as ((file#)class@)method
 		if (is_string($callback)) {
 			$arr = [];
-			preg_match('/^(([^\#])\#){0,1}((\w+)@){0,1}(\w+)$/', $callback, $arr);
+			preg_match('/^(([^\#]+)\#){0,1}(([^@]+)@){0,1}(\w+)$/', $callback, $arr);
 			$arr = ['file' => $arr[2], 'class' => $arr[4], 'method' => $arr[5]];
 			if (empty($arr['method'])) {
 				throw new Exception('Invalid argument(s), Cannot analyse action.');
@@ -100,7 +106,7 @@ class Router
 				require_once($callback['file']);
 			}
 			if (!empty($callback['class'])) {
-				$class = $callback['class'];
+				@$class = self::$groupAttr['namespace'].'\\'.$callback['class'];
 				if (!class_exists($class)) {
 					throw new Exception('The specific class `'.$class.'` does not exists in scope!');
 				}
@@ -117,6 +123,15 @@ class Router
 			}
 			return call_user_func_array($method, $args);
 		}
+	}
+
+	static protected $groupAttr = [];
+	static public function group(array $attr, Closure $func)
+	{
+		$origin = self::$groupAttr;
+		self::$groupAttr = $attr;
+		$func();
+		self::$groupAttr = $origin;
 	}
 }
 
