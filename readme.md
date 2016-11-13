@@ -1,6 +1,6 @@
 # ElfStack/Router
 ## Summary
- This is a simple router, some feature is just like Laravel's, but it's easier to use.
+ This is a simple router, some feature is just like Laravel's, but it's easier to use.  
  I hope this very very simple tool could help you a little bit, and i'm glad to get advice from you :)
 
 ## Usage
@@ -14,12 +14,13 @@ composer require elfstack/router
  Every method that create a route recieve two arguments:
  > uri, route
 
- `uri` is a string that matches the uri, you can use regex exp in that string, and anything that matches the regex exp will be passed to the function you provided. Also, you can use `{anything_you_want_here}` just like using `(^[/]+)` cause we replace `({[\w ]+})` that exp. We also replace `*` to `.*`, so you can simply use `*` to match all uri.
+ `uri` is a string that matches the uri, you can use regex exp in that string, and anything that matches the regex exp will be passed to the function you provided.  
+ Also, you can use `{anything_you_want_here}` just like using `(^[/]+)` cause we replace `({[\w ]+})` that exp. We also replace `*` to `.*`, so you can simply use `*` to match all uri.
 
- `route` can be a string or an array or a callable array/closure function.
- **callable**: We just use `call_user_func_array` to call it.
- **string**: The string will be parsed like this: `((file#)(namespace\)class@)method`
- **array**: Just like the string, you can give us an array which look like this:
+ `route` can be a string or an array or a callable array/closure function.  
+ **callable**: We just use `call_user_func_array` to call it.  
+ **string**: The string will be parsed like this: `((file#)(namespace\)class@)method`  
+ **array**: Just like the string, you can give us an array which look like this:  
 ```
 [
 	'file'   => 'foo.php',                 // could be ignored
