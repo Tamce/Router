@@ -1,11 +1,11 @@
-# ElfStack/Router
+# Tamce/Router
 ## Summary
  This is a simple router, some feature is just like Laravel's, but it's easier to use.  
  I hope this very very simple tool could help you a little bit, and i'm glad to get advice from you :)
 
 ## Usage
 ```
-composer require elfstack/router
+composer require tamce/router
 ```
  And you can just use it in your project!
 
@@ -41,7 +41,7 @@ composer require elfstack/router
 <?php
 require 'vendor/autoload.php';
 
-use ElfStack\Router;
+use Tamce\Router;
 
 Router::route('/', function () {
 	echo 'Hello World!';
