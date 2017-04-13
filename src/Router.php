@@ -1,10 +1,9 @@
 <?php
-namespace ElfStack;
-use Exception;
-
-defined('ELFENRO_ROUTE_PATH') ? '' : define('ELFENRO_ROUTE_PATH', urldecode(parse_url($_SERVER['REQUEST_URI'])['path']));
+namespace Tamce;
 use Exception;
 use Closure;
+
+defined('ELFENRO_ROUTE_PATH') ? '' : define('ELFENRO_ROUTE_PATH', urldecode(parse_url($_SERVER['REQUEST_URI'])['path']));
 
 class Router
 {
