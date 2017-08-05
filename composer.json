@@ -1,7 +1,6 @@
 {
     "name": "tamce/router",
     "description": "A simple router helps you develop faster.",
-    "version": "1.0.1-beta",
     "type": "library",
     "license": "MIT",
     "authors": [
